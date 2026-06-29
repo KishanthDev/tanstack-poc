@@ -1,14 +1,10 @@
 "use client";
 
 import {
-    BarChart3,
     LayoutDashboard,
-    LogOut,
     Settings,
-    Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
@@ -34,28 +30,12 @@ export default function Sidebar() {
                         <LayoutDashboard className="h-4 w-4" />
                         Overview
                     </Button>
-                    <Button variant="ghost" className="justify-start gap-2">
-                        <BarChart3 className="h-4 w-4" />
-                        Analytics
-                    </Button>
-                    <Button variant="ghost" className="justify-start gap-2">
-                        <Users className="h-4 w-4" />
-                        Customers
-                    </Button>
                 </nav>
             </div>
             <nav className="mt-auto flex flex-col gap-1 p-4 border-t">
                 <Button variant="ghost" className="justify-start gap-2">
                     <Settings className="h-4 w-4" />
                     Settings
-                </Button>
-                <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-2 text-red-500 hover:text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/10"
-                    onClick={handleLogout}
-                >
-                    <LogOut className="h-4 w-4" />
-                    Logout
                 </Button>
             </nav>
         </aside>

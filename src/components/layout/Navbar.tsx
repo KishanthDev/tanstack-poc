@@ -1,22 +1,31 @@
 "use client";
 
 import React from "react";
-import { Search, Bell, Menu, Sun, Moon } from "lucide-react";
+import { Search, Bell, Menu, Sun, Moon, User, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import Sidebar from "./Sidebar"; 
+import Sidebar from "./Sidebar";
 import { useTheme } from "next-themes";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const { setTheme } = useTheme();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        navigate("/");
+    };
 
     return (
         <header className="flex h-16 w-full items-center gap-4 border-b bg-background px-4 md:px-6 sticky top-0 z-40">
@@ -74,10 +83,27 @@ export default function Navbar() {
                         <Bell className="h-5 w-5 text-muted-foreground" />
                         <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-600" />
                     </Button>
-                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Avatar className="h-8 w-8 sm:h-10 sm:w-10 cursor-pointer">
+                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer">
+                                <User className="mr-2 h-4 w-4" />
+                                <span>Profile</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>Logout</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </header>
