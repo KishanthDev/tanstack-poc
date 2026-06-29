@@ -1,233 +1,226 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight, Sparkles } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
 
-  // Mock submission handler
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
-    localStorage.setItem("isLoggedIn", "true");
-
-    navigate("/dashboard");
+    setTimeout(() => {
+      setIsLoading(false);
+      window.location.href = "/dashboard";
+      localStorage.setItem("isLoggedIn", "true");
+    }, 2000);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-950 p-4">
-      <div className="w-full max-w-md">
-        <div className="flex flex-col items-center space-y-2 text-center mb-8">
-          <div className="h-12 w-12 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-xl">UI</span>
+    <div className="relative min-h-screen w-full overflow-hidden bg-zinc-950 text-zinc-50 selection:bg-amber-500/30">
+
+      {/* Ambient Background Glows */}
+      <div className="absolute -top-[25%] -left-[10%] h-[70%] w-[50%] rounded-full bg-amber-600/10 blur-[120px]" />
+      <div className="absolute bottom-[0%] right-[0%] h-[60%] w-[40%] rounded-full bg-orange-600/10 blur-[120px]" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+
+      <div className="relative z-10 flex min-h-screen w-full items-center justify-center">
+
+        {/* Main Floating Container */}
+        <div className="flex w-full max-w-[1000px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl backdrop-blur-xl lg:flex-row">
+
+          {/* Left Side: Art & Branding */}
+          <div className="relative hidden w-1/2 flex-col justify-between p-12 lg:flex border-r border-white/10 bg-zinc-900/30">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-black shadow-lg">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <span className="text-xl font-semibold tracking-wide">Acme Studio</span>
+            </div>
+
+            <div className="space-y-6">
+              <h2 className="text-4xl font-light leading-tight tracking-tight text-white">
+                Crafting digital <br />
+                <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
+                  masterpieces.
+                </span>
+              </h2>
+              <p className="text-zinc-400 leading-relaxed max-w-sm">
+                Log in to access your bespoke dashboard, manage ongoing projects, and refine your vision with our premium toolset.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-zinc-500">
+              <div className="flex -space-x-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-8 w-8 rounded-full border-2 border-zinc-900 bg-zinc-800" />
+                ))}
+              </div>
+              <p>Trusted by 10k+ creators</p>
+            </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your details to access your account.
-          </p>
-        </div>
 
-        <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
+          {/* Right Side: Interactive Forms */}
+          <div className="flex w-full flex-col justify-center p-8 sm:p-12 lg:w-1/2">
 
-          {/* LOGIN TAB */}
-          <TabsContent value="login">
-            <Card className="border-border/50 shadow-lg backdrop-blur-sm bg-background/95">
-              <CardHeader>
-                <CardTitle>Login</CardTitle>
-                <CardDescription>
-                  Welcome back! Please login to your account.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+            {/* Mobile Header (Hidden on Desktop) */}
+            <div className="mb-8 flex items-center gap-3 lg:hidden">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-black shadow-lg">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <span className="text-xl font-semibold tracking-wide">Acme Studio</span>
+            </div>
 
-                  <Button variant="outline" type="button" disabled={isLoading}>
-                    <svg
-                      className="mr-2 h-4 w-4"
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fab"
-                      data-icon="google"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 488 512"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-                      ></path>
-                    </svg>
-                    Google
-                  </Button>
-                  <Button variant="outline" type="button" disabled={isLoading}>
-                    <svg
-                      className="mr-2 h-4 w-4"
-                      aria-hidden="true"
-                      focusable="false"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 320 512"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06H297V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+            <div className="mx-auto w-full max-w-sm">
+              <Tabs defaultValue="login" className="w-full">
+
+                {/* Custom Elegant Tabs */}
+                <TabsList className="mb-8 grid w-full grid-cols-2 rounded-full bg-zinc-900/50 p-1 border border-white/5">
+                  <TabsTrigger
+                    value="login"
+                    className="rounded-full data-[state=active]:bg-zinc-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                  >
+                    Login
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="signup"
+                    className="rounded-full data-[state=active]:bg-zinc-800 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                  >
+                    Register
+                  </TabsTrigger>
+                </TabsList>
+
+                {/* LOGIN CONTENT */}
+                <TabsContent value="login" className="animate-in fade-in-50 slide-in-from-bottom-2 duration-500">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-medium tracking-tight text-white">Welcome back</h3>
+                    <p className="text-sm text-zinc-400 mt-1">Enter your credentials to continue.</p>
+                  </div>
+
+                  <form onSubmit={onSubmit} className="space-y-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-zinc-300">Email Address</Label>
+                      <Input
+                        id="email"
+                        placeholder="hello@example.com"
+                        type="email"
+                        required
+                        disabled={isLoading}
+                        className="h-12 border-white/10 bg-zinc-900/50 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500/50 focus-visible:border-amber-500/50 transition-all rounded-xl"
                       />
-                    </svg>
-                    Facebook
-                  </Button>
-                </div>
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                <form onSubmit={onSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      placeholder="m@example.com"
-                      type="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect="off"
-                      required
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">Password</Label>
-                      <a
-                        href="#"
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        Forgot password?
-                      </a>
-                    </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <Button className="w-full" type="submit" disabled={isLoading}>
-                    {isLoading && (
-                      <Mail className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Sign In
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* SIGN UP TAB */}
-          <TabsContent value="signup">
-            <Card className="border-border/50 shadow-lg backdrop-blur-sm bg-background/95">
-              <CardHeader>
-                <CardTitle>Create an account</CardTitle>
-                <CardDescription>
-                  Enter your information to get started.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <form onSubmit={onSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="first-name">First name</Label>
-                      <Input id="first-name" placeholder="John" required disabled={isLoading} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="last-name">Last name</Label>
-                      <Input id="last-name" placeholder="Doe" required disabled={isLoading} />
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="password" className="text-zinc-300">Password</Label>
+                        <a href="#" className="text-xs font-medium text-amber-500 hover:text-amber-400 transition-colors">
+                          Recover password
+                        </a>
+                      </div>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        required
+                        disabled={isLoading}
+                        className="h-12 border-white/10 bg-zinc-900/50 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500/50 focus-visible:border-amber-500/50 transition-all rounded-xl"
+                      />
+                    </div>
+                    <Button
+                      className="group h-12 w-full rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 font-medium transition-all"
+                      type="submit"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <Mail className="mr-2 h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          Sign In
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </TabsContent>
+
+                {/* SIGNUP CONTENT */}
+                <TabsContent value="signup" className="animate-in fade-in-50 slide-in-from-bottom-2 duration-500">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-medium tracking-tight text-white">Create an account</h3>
+                    <p className="text-sm text-zinc-400 mt-1">Start crafting your vision today.</p>
+                  </div>
+
+                  <form onSubmit={onSubmit} className="space-y-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email" className="text-zinc-300">Email Address</Label>
+                      <Input
+                        id="signup-email"
+                        placeholder="hello@example.com"
+                        type="email"
+                        required
+                        disabled={isLoading}
+                        className="h-12 border-white/10 bg-zinc-900/50 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500/50 focus-visible:border-amber-500/50 transition-all rounded-xl"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password" className="text-zinc-300">Password</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        placeholder="Create a strong password"
+                        required
+                        disabled={isLoading}
+                        className="h-12 border-white/10 bg-zinc-900/50 text-white placeholder:text-zinc-600 focus-visible:ring-amber-500/50 focus-visible:border-amber-500/50 transition-all rounded-xl"
+                      />
+                    </div>
+                    <Button
+                      className="group h-12 w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:opacity-90 font-medium transition-all border-none shadow-lg shadow-amber-900/20"
+                      type="submit"
+                      disabled={isLoading}
+                    >
+                      Create Account
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </form>
+                </TabsContent>
+
+                {/* Shared Social Logins */}
+                <div className="mt-8">
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-white/10" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase tracking-wider">
+                      <span className="bg-zinc-950/50 px-3 text-zinc-500 backdrop-blur-sm">
+                        Or continue with
+                      </span>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      placeholder="m@example.com"
-                      type="email"
-                      required
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      required
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <Button className="w-full" type="submit" disabled={isLoading}>
-                    Create Account
-                  </Button>
-                </form>
 
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or sign up with
-                    </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" type="button" disabled={isLoading} className="h-11 rounded-xl border-white/10 bg-zinc-900/30 hover:bg-zinc-800 hover:text-white transition-all text-zinc-300">
+                      <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
+                        <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+                      </svg>
+                      Google
+                    </Button>
+                    <Button variant="outline" type="button" disabled={isLoading} className="h-11 rounded-xl border-white/10 bg-zinc-900/30 hover:bg-zinc-800 hover:text-white transition-all text-zinc-300">
+                      <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path fill="currentColor" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06H297V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+                      </svg>
+                      Facebook
+                    </Button>
                   </div>
                 </div>
 
-                <Button variant="outline" type="button" className="w-full" disabled={isLoading}>
-                  <Mail className="mr-2 h-4 w-4" />
-                  Email
-                </Button>
-              </CardContent>
-              <CardFooter>
-                <p className="text-center text-sm text-muted-foreground w-full">
-                  By clicking continue, you agree to our{" "}
-                  <a href="#" className="underline underline-offset-4 hover:text-primary">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="underline underline-offset-4 hover:text-primary">
-                    Privacy Policy
-                  </a>
-                  .
-                </p>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </Tabs>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
