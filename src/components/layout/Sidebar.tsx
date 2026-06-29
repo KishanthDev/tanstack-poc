@@ -25,7 +25,7 @@ export default function Sidebar() {
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                             <span className="text-sm">UI</span>
                         </div>
-                        Acme Corp
+                        POC
                     </div>
                 </div>
 

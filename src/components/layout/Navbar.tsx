@@ -35,7 +35,7 @@ export default function Navbar() {
                         <Sidebar />
                     </SheetContent>
                 </Sheet>
-                <div className="font-bold text-lg lg:hidden">Acme Corp</div>
+                <div className="font-bold text-lg lg:hidden">POC</div>
             </div>
 
             {/* Desktop Search & Controls */}
