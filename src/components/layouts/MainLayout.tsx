@@ -11,12 +11,12 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
     return (
-        <div className="min-h-screen w-full bg-muted/40">
+        <div className="min-h-screen w-full bg-background">
             {/* Sidebar Wrapper */}
             <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:flex lg:w-64 lg:flex-col border-r bg-background">
                 <Sidebar />
             </div>
-            
+
             {/* Main Content Wrapper */}
             <div className="flex flex-col lg:pl-64">
                 <Navbar />

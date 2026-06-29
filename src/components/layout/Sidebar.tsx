@@ -9,8 +9,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        navigate("/");
+    };
     return (
         <aside className="flex h-full w-full flex-col bg-background">
             <div className="flex-1">
@@ -43,7 +49,11 @@ export default function Sidebar() {
                     <Settings className="h-4 w-4" />
                     Settings
                 </Button>
-                <Button variant="ghost" className="w-full justify-start gap-2 text-red-500 hover:text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/10">
+                <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-2 text-red-500 hover:text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/10"
+                    onClick={handleLogout}
+                >
                     <LogOut className="h-4 w-4" />
                     Logout
                 </Button>
