@@ -1,80 +1,136 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Navbar from "./Navbar";
-import { useTheme } from "next-themes";
-import { useNavigate } from "react-router-dom";
 
-jest.mock("next-themes", () => ({
-    useTheme: jest.fn(),
+const mockNavigate = vi.fn();
+const mockSetTheme = vi.fn();
+
+vi.mock("react-router-dom", () => ({
+  useNavigate: () => mockNavigate,
 }));
 
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
-    useNavigate: jest.fn(),
+vi.mock("next-themes", () => ({
+  useTheme: () => ({
+    setTheme: mockSetTheme,
+  }),
 }));
 
-jest.mock("./Sidebar", () => () => <div>Sidebar</div>);
+vi.mock("./Sidebar", () => ({
+  default: () => <div>Sidebar</div>,
+}));
+
+vi.mock("@/components/ui/sheet", () => ({
+  Sheet: ({ children }: any) => <div>{children}</div>,
+  SheetTrigger: ({ children }: any) => <>{children}</>,
+  SheetContent: ({ children }: any) => <div>{children}</div>,
+  SheetTitle: ({ children }: any) => <div>{children}</div>,
+}));
+
+vi.mock("@/components/ui/dropdown-menu", () => ({
+  DropdownMenu: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuTrigger: ({ children }: any) => <>{children}</>,
+  DropdownMenuContent: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuItem: ({ children, onClick }: any) => (
+    <button onClick={onClick}>{children}</button>
+  ),
+  DropdownMenuLabel: ({ children }: any) => <div>{children}</div>,
+  DropdownMenuSeparator: () => <hr />,
+}));
 
 describe("Navbar", () => {
-    const mockSetTheme = jest.fn();
-    const mockNavigate = jest.fn();
+  beforeEach(() => {
+    vi.clearAllMocks();
+    localStorage.clear();
+  });
 
-    beforeEach(() => {
-        (useTheme as jest.Mock).mockReturnValue({
-            setTheme: mockSetTheme,
-        });
-        (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-        jest.spyOn(window.localStorage.__proto__, 'removeItem');
-    });
+  it("renders search input", () => {
+    render(<Navbar />);
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+    expect(
+      screen.getByPlaceholderText("Search...")
+    ).toBeInTheDocument();
+  });
 
-    it("renders the navbar with search and user controls", () => {
-        render(<Navbar />);
-        expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /toggle theme/i })).toBeInTheDocument();
-        expect(screen.getByLabelText("My Account")).toBeInTheDocument();
-    });
+  it("renders mobile menu", () => {
+    render(<Navbar />);
 
-    it("opens the theme dropdown and allows changing themes", () => {
-        render(<Navbar />);
-        const themeButton = screen.getByRole("button", { name: /toggle theme/i });
-        fireEvent.click(themeButton);
+    expect(
+      screen.getByRole("button", { name: /toggle menu/i })
+    ).toBeInTheDocument();
 
-        const lightThemeItem = screen.getByText("Light");
-        fireEvent.click(lightThemeItem);
-        expect(mockSetTheme).toHaveBeenCalledWith("light");
+    expect(screen.getByText("Sidebar")).toBeInTheDocument();
+  });
 
-        const darkThemeItem = screen.getByText("Dark");
-        fireEvent.click(darkThemeItem);
-        expect(mockSetTheme).toHaveBeenCalledWith("dark");
+it("renders notification button", () => {
+  const { container } = render(<Navbar />);
 
-        const systemThemeItem = screen.getByText("System");
-        fireEvent.click(systemThemeItem);
-        expect(mockSetTheme).toHaveBeenCalledWith("system");
-    });
+  const bellIcon = container.querySelector(".lucide-bell");
 
-    it("handles logout correctly", () => {
-        render(<Navbar />);
-        const avatarButton = screen.getByLabelText("My Account");
-        fireEvent.click(avatarButton);
+  expect(bellIcon).toBeInTheDocument();
+});
 
-        const logoutButton = screen.getByText("Logout");
-        fireEvent.click(logoutButton);
+  it("changes theme to light", async () => {
+    const user = userEvent.setup();
 
-        expect(localStorage.removeItem).toHaveBeenCalledWith("isLoggedIn");
-        expect(mockNavigate).toHaveBeenCalledWith("/");
-    });
+    render(<Navbar />);
 
-    it("opens the mobile sidebar when menu button is clicked", () => {
-        render(<Navbar />);
-        const menuButton = screen.getByRole("button", { name: /toggle menu/i });
+    await user.click(screen.getByText("Light"));
 
-        // In the test environment, the sheet might not be visually hidden,
-        // so we check for its content after the trigger is clicked.
-        fireEvent.click(menuButton);
-        expect(screen.getByText("Sidebar")).toBeInTheDocument();
-    });
+    expect(mockSetTheme).toHaveBeenCalledWith("light");
+  });
+
+  it("changes theme to dark", async () => {
+    const user = userEvent.setup();
+
+    render(<Navbar />);
+
+    await user.click(screen.getByText("Dark"));
+
+    expect(mockSetTheme).toHaveBeenCalledWith("dark");
+  });
+
+  it("changes theme to system", async () => {
+    const user = userEvent.setup();
+
+    render(<Navbar />);
+
+    await user.click(screen.getByText("System"));
+
+    expect(mockSetTheme).toHaveBeenCalledWith("system");
+  });
+
+  it("renders account menu items", () => {
+    render(<Navbar />);
+
+    expect(screen.getByText("My Account")).toBeInTheDocument();
+    expect(screen.getByText("Profile")).toBeInTheDocument();
+    expect(screen.getByText("Logout")).toBeInTheDocument();
+  });
+
+  it("logs out and redirects to login", async () => {
+    const user = userEvent.setup();
+
+    localStorage.setItem("isLoggedIn", "true");
+
+    render(<Navbar />);
+
+    await user.click(screen.getByText("Logout"));
+
+    expect(localStorage.getItem("isLoggedIn")).toBeNull();
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
+
+  it("renders avatar fallback", () => {
+    render(<Navbar />);
+
+    expect(screen.getByText("CN")).toBeInTheDocument();
+  });
+
+  it("renders POC logo", () => {
+    render(<Navbar />);
+
+    expect(screen.getAllByText("POC")[0]).toBeInTheDocument();
+  });
 });
