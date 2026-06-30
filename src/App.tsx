@@ -3,6 +3,7 @@ import Login from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "./components/layouts/MainLayout";
+import UsersPage from "./pages/UsersPage";
 
 function App() {
   return (
@@ -15,6 +16,17 @@ function App() {
           <ProtectedRoute>
             <MainLayout>
               <Dashboard />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/users"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <UsersPage />
             </MainLayout>
           </ProtectedRoute>
         }

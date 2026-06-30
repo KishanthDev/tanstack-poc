@@ -5,6 +5,7 @@ import {
     PanelLeftClose,
     PanelRightClose,
     Settings,
+    User,
 } from "lucide-react";
 import {
     ActionIcon,
@@ -30,6 +31,11 @@ const menuItems = [
         title: "Dashboard",
         icon: LayoutDashboard,
         href: "/dashboard",
+    },
+    {
+        title: "Users",
+        icon: User,
+        href: "/users",
     },
 ];
 
