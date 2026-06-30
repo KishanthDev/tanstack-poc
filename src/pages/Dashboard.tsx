@@ -2,229 +2,225 @@
 
 import React from "react";
 import {
-    Activity,
-    CreditCard,
-    DollarSign,
-    Users,
+  Activity,
+  CreditCard,
+  DollarSign,
+  Download,
+  Users,
 } from "lucide-react";
+
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Grid,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+
+const stats = [
+  {
+    title: "Total Revenue",
+    value: "$45,231.89",
+    change: "+20.1% from last month",
+    icon: DollarSign,
+  },
+  {
+    title: "Subscriptions",
+    value: "+2,350",
+    change: "+180.1% from last month",
+    icon: Users,
+  },
+  {
+    title: "Sales",
+    value: "+12,234",
+    change: "+19% from last month",
+    icon: CreditCard,
+  },
+  {
+    title: "Active Users",
+    value: "+573",
+    change: "+201 since last hour",
+    icon: Activity,
+  },
+];
+
+const sales = [
+  {
+    name: "Olivia Martin",
+    email: "olivia@email.com",
+    amount: "+$1,999",
+  },
+  {
+    name: "Jackson Lee",
+    email: "jackson@email.com",
+    amount: "+$399",
+  },
+  {
+    name: "Isabella Nguyen",
+    email: "isabella@email.com",
+    amount: "+$299",
+  },
+  {
+    name: "William Kim",
+    email: "will@email.com",
+    amount: "+$99",
+  },
+  {
+    name: "Sofia Davis",
+    email: "sofia@email.com",
+    amount: "+$39",
+  },
+];
+
+const chartData = [40, 70, 45, 90, 65, 55, 85, 100, 60, 80, 50, 75];
 
 export default function Dashboard() {
-    return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold tracking-tight">
-                    Dashboard
-                </h2>
+  return (
+    <Stack gap="lg">
+      {/* Header */}
 
-                <Button>Download Report</Button>
-            </div>
+      <Group justify="space-between">
+        <Title order={2}>Dashboard</Title>
 
-            {/* Stats */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Total Revenue
-                        </CardTitle>
+        <Button leftSection={<Download size={16} />}>
+          Download Report
+        </Button>
+      </Group>
 
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
+      {/* Stats */}
 
-                    <CardContent>
-                        <div className="text-2xl font-bold">
-                            $45,231.89
-                        </div>
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }}>
+        {stats.map((stat) => (
+          <Card key={stat.title} withBorder shadow="sm" radius="md">
+            <Group justify="space-between" mb="xs">
+              <Text fw={500} c="dimmed" size="sm">
+                {stat.title}
+              </Text>
 
-                        <p className="text-xs text-muted-foreground">
-                            +20.1% from last month
-                        </p>
-                    </CardContent>
-                </Card>
+              <ThemeIcon variant="light">
+                <stat.icon size={18} />
+              </ThemeIcon>
+            </Group>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Subscriptions
-                        </CardTitle>
+            <Title order={3}>{stat.value}</Title>
 
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
+            <Text size="sm" c="dimmed" mt={6}>
+              {stat.change}
+            </Text>
+          </Card>
+        ))}
+      </SimpleGrid>
 
-                    <CardContent>
-                        <div className="text-2xl font-bold">
-                            +2,350
-                        </div>
+      {/* Bottom */}
 
-                        <p className="text-xs text-muted-foreground">
-                            +180.1% from last month
-                        </p>
-                    </CardContent>
-                </Card>
+      <Grid>
+        {/* Overview */}
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Sales
-                        </CardTitle>
+        <Grid.Col span={{ base: 12, lg: 8 }}>
+          <Card withBorder shadow="sm" radius="md">
+            <Title order={4}>Overview</Title>
 
-                        <CreditCard className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
+            <Text c="dimmed" size="sm" mb="lg">
+              Monthly revenue breakdown for 2024.
+            </Text>
 
-                    <CardContent>
-                        <div className="text-2xl font-bold">
-                            +12,234
-                        </div>
+            <Flex align="flex-end" h={300} gap="xs">
+              {chartData.map((height, index) => (
+                <Paper
+                  key={index}
+                  radius="sm"
+                  style={{
+                    flex: 1,
+                    height: `${height}%`,
+                    background: "var(--mantine-primary-color-filled)",
+                    opacity: 0.25,
+                    transition: "all .2s",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.opacity = "1")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.opacity = ".25")
+                  }
+                />
+              ))}
+            </Flex>
 
-                        <p className="text-xs text-muted-foreground">
-                            +19% from last month
-                        </p>
-                    </CardContent>
-                </Card>
+            <Group justify="space-between" mt="md">
+              {[
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ].map((m) => (
+                <Text key={m} size="xs" c="dimmed">
+                  {m}
+                </Text>
+              ))}
+            </Group>
+          </Card>
+        </Grid.Col>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Active Users
-                        </CardTitle>
+        {/* Recent Sales */}
 
-                        <Activity className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
+        <Grid.Col span={{ base: 12, lg: 4 }}>
+          <Card withBorder shadow="sm" radius="md">
+            <Title order={4}>Recent Sales</Title>
 
-                    <CardContent>
-                        <div className="text-2xl font-bold">
-                            +573
-                        </div>
+            <Text c="dimmed" size="sm" mb="lg">
+              You made 265 sales this month.
+            </Text>
 
-                        <p className="text-xs text-muted-foreground">
-                            +201 since last hour
-                        </p>
-                    </CardContent>
-                </Card>
-            </div>
+            <Stack gap="md">
+              {sales.map((user) => (
+                <React.Fragment key={user.email}>
+                  <Group justify="space-between">
+                    <Group>
+                      <Avatar radius="xl">
+                        {user.name
+                          .split(" ")
+                          .map((x) => x[0])
+                          .join("")}
+                      </Avatar>
 
-            {/* Bottom Grid */}
-            <div className="grid gap-4 lg:grid-cols-7">
-                {/* Chart */}
-                <Card className="col-span-4">
-                    <CardHeader>
-                        <CardTitle>Overview</CardTitle>
+                      <div>
+                        <Text fw={500}>{user.name}</Text>
 
-                        <CardDescription>
-                            Monthly revenue breakdown for 2024.
-                        </CardDescription>
-                    </CardHeader>
+                        <Text size="sm" c="dimmed">
+                          {user.email}
+                        </Text>
+                      </div>
+                    </Group>
 
-                    <CardContent>
-                        <div className="flex h-[300px] items-end gap-2">
-                            {[40, 70, 45, 90, 65, 55, 85, 100, 60, 80, 50, 75].map(
-                                (height, index) => (
-                                    <div
-                                        key={index}
-                                        className="w-full rounded-t bg-primary/20 transition-colors hover:bg-primary"
-                                        style={{ height: `${height}%` }}
-                                    />
-                                )
-                            )}
-                        </div>
+                    <Text fw={700} c="green">
+                      {user.amount}
+                    </Text>
+                  </Group>
 
-                        <div className="mt-4 flex justify-between text-xs text-muted-foreground">
-                            <span>Jan</span>
-                            <span>Feb</span>
-                            <span>Mar</span>
-                            <span>Apr</span>
-                            <span>May</span>
-                            <span>Jun</span>
-                            <span>Jul</span>
-                            <span>Aug</span>
-                            <span>Sep</span>
-                            <span>Oct</span>
-                            <span>Nov</span>
-                            <span>Dec</span>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Recent Sales */}
-                <Card className="col-span-3">
-                    <CardHeader>
-                        <CardTitle>Recent Sales</CardTitle>
-
-                        <CardDescription>
-                            You made 265 sales this month.
-                        </CardDescription>
-                    </CardHeader>
-
-                    <CardContent>
-                        <div className="space-y-6">
-                            {[
-                                {
-                                    name: "Olivia Martin",
-                                    email: "olivia@email.com",
-                                    amount: "+$1,999",
-                                },
-                                {
-                                    name: "Jackson Lee",
-                                    email: "jackson@email.com",
-                                    amount: "+$399",
-                                },
-                                {
-                                    name: "Isabella Nguyen",
-                                    email: "isabella@email.com",
-                                    amount: "+$299",
-                                },
-                                {
-                                    name: "William Kim",
-                                    email: "will@email.com",
-                                    amount: "+$99",
-                                },
-                                {
-                                    name: "Sofia Davis",
-                                    email: "sofia@email.com",
-                                    amount: "+$39",
-                                },
-                            ].map((user, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-center"
-                                >
-                                    <Avatar className="h-9 w-9">
-                                        <AvatarFallback>
-                                            {user.name
-                                                .split(" ")
-                                                .map((n) => n[0])
-                                                .join("")}
-                                        </AvatarFallback>
-                                    </Avatar>
-
-                                    <div className="ml-4">
-                                        <p className="text-sm font-medium">
-                                            {user.name}
-                                        </p>
-
-                                        <p className="text-sm text-muted-foreground">
-                                            {user.email}
-                                        </p>
-                                    </div>
-
-                                    <div className="ml-auto font-medium text-green-600 dark:text-green-400">
-                                        {user.amount}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
-    );
+                  <Divider />
+                </React.Fragment>
+              ))}
+            </Stack>
+          </Card>
+        </Grid.Col>
+      </Grid>
+    </Stack>
+  );
 }

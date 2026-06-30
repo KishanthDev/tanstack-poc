@@ -3,7 +3,6 @@
 import { ReactNode, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Navbar from "@/components/layout/Navbar";
-import React from "react";
 import { cn } from "@/lib/utils";
 
 interface MainLayoutProps {
@@ -25,8 +24,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </div>
 
             {/* Main Content Wrapper */}
-            <div className={cn("flex flex-col transition-all duration-300", isSidebarCollapsed ? "lg:pl-20" : "lg:pl-64")}>
+            <div className={cn("flex flex-col min-h-screen transition-all duration-300", isSidebarCollapsed ? "lg:pl-20" : "lg:pl-64")}>
                 <Navbar />
+               
                 <main className="flex-1 p-5 overflow-y-auto">
                     {children}
                 </main>
