@@ -13,6 +13,10 @@ export default defineConfig({
   },
 
   test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+    },
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/test/setup.ts",
