@@ -4,6 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "./components/layouts/MainLayout";
 import UsersPage from "./pages/UsersPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -26,7 +28,9 @@ function App() {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <UsersPage />
+              <QueryClientProvider client={queryClient}>
+                <UsersPage />
+              </QueryClientProvider>
             </MainLayout>
           </ProtectedRoute>
         }

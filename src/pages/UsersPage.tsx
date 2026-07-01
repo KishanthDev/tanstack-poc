@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
     Alert,
     Card,
@@ -27,36 +27,30 @@ interface User {
     };
 }
 
+const fetchUsers = async (): Promise<User[]> => {
+    const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users?_limit=5"
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch users");
+    }
+
+    return response.json();
+};
+
 const UsersPage = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch(
-                    "https://jsonplaceholder.typicode.com/users?_limit=5"
-                );
+    const {
+        data: users = [],
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["users"],
+        queryFn: fetchUsers,
+    });
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch users");
-                }
-
-                const data: User[] = await response.json();
-                setUsers(data);
-            } catch (err) {
-                setError("Unable to load users.");
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUsers();
-    }, []);
-
-    if (loading) {
+    if (isLoading) {
         return (
             <Center h="100vh">
                 <Loader size="lg" />
@@ -76,7 +70,7 @@ const UsersPage = () => {
                     color="red"
                     mb="md"
                 >
-                    {error}
+                    {(error as Error).message}
                 </Alert>
             )}
 
